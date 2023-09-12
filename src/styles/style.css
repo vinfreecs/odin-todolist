@@ -12,7 +12,8 @@ body{
     flex: 1;
     padding: 2rem;
 }
-.note-form{
+.note-form-inp,
+.note-form-edit{
     margin-top: 1rem;
     display: flex;
     flex-direction: column;

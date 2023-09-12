@@ -15,13 +15,19 @@
     </div>
     <div class="right" style="display: none;">
         <div class="notes"></div>
-        <form action="" class="note-form">
-
-            <input type="text" name="note-title" id="note-title" placeholder="Title" required/>
-            <textarea name="note-description" id="note-description" placeholder="description" cols="30" rows="10"></textarea>
-            <input type="date" name="note-due-date" id="note-due-date" placeholder="Due Date">
+        <button class="note-form-btn">+</button>
+        <form action="" class="note-form-inp" style="display: none;">
+            <input type="text" name="note-title-inp" id="note-title-inp" placeholder="Title" required/>
+            <textarea name="note-description-inp" id="note-description-inp" placeholder="description" cols="30" rows="10" ></textarea>
+            <input type="date" name="note-due-date-inp" id="note-due-date-inp" placeholder="Due Date">
             <button class="note-submit">+</button>
         </form>
+        <form action="" class="note-form-edit" style="display: none;">
+          <input type="text" name="note-title-edit" id="note-title-edit" placeholder="Title" required/>
+          <textarea name="note-description-edit" id="note-description-edit" placeholder="description" cols="30" rows="10"></textarea>
+          <input type="date" name="note-due-date-edit" id="note-due-date-edit" placeholder="Due Date">
+          <button class="note-submit">+</button>
+      </form>
     </div>
   </body>
 </html>
