@@ -8,6 +8,45 @@ body{
     height: 100vh;
     display: flex;
 }
+.left{
+    margin: 0.25rem;
+    padding: 0.5rem;
+}
+.projects{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.project-div-btn,
+.project-form-btn,
+.project-name-submit{
+    border: none;
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    height: 50px;
+    width: 300px;
+    font-weight: 700;
+    border-radius: 8px;
+}
+#project-name{
+    height: 35px;
+    border: none;
+}
+#project-name:focus{    
+    border: 5px solid #e4dced; 
+    background-color: rgba(185, 243, 243, 0.648);
+}
+
+.project-form-btn{
+    margin-top: 10px;
+}
+form.project-form{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+}
 .right{
     flex: 1;
     padding: 2rem;

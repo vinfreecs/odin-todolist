@@ -8,7 +8,8 @@
   <body>
     <div class="left">
         <div class="projects"></div>
-      <form action="" class="project-form">
+        <button class="project-form-btn">Add Project</button>
+      <form action="" class="project-form" style="display: none;">
         <input type="text" name="project-name" id="project-name" placeholder="Title"/>
         <button class="project-name-submit">+</button>
       </form>
@@ -18,14 +19,32 @@
         <button class="note-form-btn">+</button>
         <form action="" class="note-form-inp" style="display: none;">
             <input type="text" name="note-title-inp" id="note-title-inp" placeholder="Title" required/>
+            <input type="reset" value="*" class="note-form-close">
             <textarea name="note-description-inp" id="note-description-inp" placeholder="description" cols="30" rows="10" ></textarea>
             <input type="date" name="note-due-date-inp" id="note-due-date-inp" placeholder="Due Date">
+            <div class="note-priority">
+              <input type="radio" name="priority" value="green" id="note-priority-1">
+              <label for="note-priority-1">green</label>
+              <input type="radio" name="priority" value="yellow" id="note-priority-2">
+              <label for="note-priority-2">yellow</label>
+              <input type="radio" name="priority" value="red" id="note-priority-3">
+              <label for="note-priority-3">red</label>
+            </div>
             <button class="note-submit">+</button>
         </form>
         <form action="" class="note-form-edit" style="display: none;">
           <input type="text" name="note-title-edit" id="note-title-edit" placeholder="Title" required/>
+          <input type="reset" value="Close" class="note-form-close-edit">
           <textarea name="note-description-edit" id="note-description-edit" placeholder="description" cols="30" rows="10"></textarea>
           <input type="date" name="note-due-date-edit" id="note-due-date-edit" placeholder="Due Date">
+          <div class="note-priority-edit">
+            <input type="radio" name="priority-edit" value="green" id="note-priority-1-edit">
+            <label for="note-priority-1-edit">green</label>
+            <input type="radio" name="priority-edit" value="yellow" id="note-priority-2-edit">
+            <label for="note-priority-2-edit">yellow</label>
+            <input type="radio" name="priority-edit" value="red" id="note-priority-3-edit">
+            <label for="note-priority-3-edit">red</label>
+          </div>
           <button class="note-submit">+</button>
       </form>
     </div>

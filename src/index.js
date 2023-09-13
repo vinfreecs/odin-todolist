@@ -5,7 +5,8 @@ function Collection() {
   let beginNote = new Note(
     "New Note",
     "Add any info you wamt hear....",
-    "2023-09-11"
+    "2023-09-11",
+    "black"
   );
   beginProj.notes.push(beginNote);
   collection.push(beginProj);
@@ -30,21 +31,23 @@ function Collection() {
       collection.push(proj);
     }
   };
-  this.addNoteToProject = function (proj, title, description, dueDate) {
-    let note = new Note(title, description, dueDate);
+  this.addNoteToProject = function (proj, title, description, dueDate,priority) {
+    let note = new Note(title, description, dueDate,priority);
     proj.notes.push(note);
   };
   this.editNoteToProject = function (
     noteId,
     edittitle,
     editdescription,
-    editDueDate
+    editDueDate,
+    editPriority
   ) {
     currentProj.notes.map((ele) => {
       if (ele.id === noteId) {
         ele.title = edittitle;
         ele.description = editdescription;
         ele.dueDate = editDueDate;
+        ele.priority = editPriority
       }
     });
   };
@@ -73,16 +76,13 @@ function Project(name) {
   this.name = name;
   this.notes = [];
 }
-function Note(title, description, dueDate) {
+function Note(title, description, dueDate,priority) {
   this.id = Date.now();
   this.title = title;
   this.description = description;
   this.dueDate = dueDate;
   this.check = false;
-  //   this.handleCheck = function (proj, note) {
-  //     this.check = true;
-  //     vari.deleteNote(proj, note);
-  //   };
+  this.priority = priority
 }
 
 function ScreenController() {
@@ -92,8 +92,8 @@ function ScreenController() {
   const updateScreen = () => {
     projectsDiv.textContent = "";
     projectsList.map((item) => {
-      const projectDiv = document.createElement("div");
-      projectDiv.classList = "project-div";
+      const projectDiv = document.createElement("button");
+      projectDiv.classList = "project-div-btn";
       projectDiv.textContent = item.name;
       projectsDiv.appendChild(projectDiv);
     });
@@ -136,6 +136,7 @@ function ScreenController() {
           const editBtn = document.createElement("button");
           editBtn.classList = "note-edit";
           editBtn.textContent = "edit";
+          note.style.borderColor = ele.priority
           note.append(title);
           note.append(description);
           note.append(dueDate);
@@ -162,6 +163,13 @@ function ScreenController() {
       let noteTitle = document.getElementById("note-title-inp");
       let noteDescription = document.getElementById("note-description-inp");
       let noteDueDate = document.getElementById("note-due-date-inp");
+      let notePriority1 = document.getElementById("note-priority-1");
+      let notePriority2 = document.getElementById("note-priority-2");
+      let notePriority3 = document.getElementById("note-priority-3");
+      let notePriority = document.querySelectorAll('input[name="priority"]:checked')
+      let priorityColorValue = notePriority.length>0 ? notePriority[0].value : "black"
+      console.log(priorityColorValue);
+      console.log(notePriority1,notePriority2,notePriority3);
       if (noteTitle.value === "") {
         alert("Enter some text");
       } else {
@@ -171,7 +179,8 @@ function ScreenController() {
               item,
               noteTitle.value,
               noteDescription.value,
-              noteDueDate.value
+              noteDueDate.value,
+              priorityColorValue
             );
           }
         });
@@ -180,6 +189,10 @@ function ScreenController() {
       noteTitle.value = "";
       noteDescription.value = "";
       noteDueDate.value = "";
+      notePriority1.checked = false
+      notePriority2.checked = false
+      notePriority3.checked = false
+
       noteForm.style.display = "none";
     }
   }
@@ -192,6 +205,8 @@ function ScreenController() {
       main.addProject(name.value);
     }
     name.value = "";
+    projectForm.style.display="none"
+    projectsFormBtn.style.display="block"
     updateScreen();
   }
   function deleteNote(e) {
@@ -211,11 +226,15 @@ function ScreenController() {
     let noteTitleEdit = document.getElementById("note-title-edit");
     let noteDescriptionEdit = document.getElementById("note-description-edit");
     let noteDueDateEdit = document.getElementById("note-due-date-edit");
+    let notePriorityEdit = document.querySelectorAll('input[name="priority-edit"]:checked')
+    let priorityColorValueEdit = notePriorityEdit.length>0 ? notePriorityEdit[0].value : "black"
+
     main.editNoteToProject(
       editNoteId,
       noteTitleEdit.value,
       noteDescriptionEdit.value,
-      noteDueDateEdit.value
+      noteDueDateEdit.value,
+      priorityColorValueEdit
     );
     updateNotes();
     noteFormEdit.style.display = "none";
@@ -230,6 +249,7 @@ function ScreenController() {
           "note-description-edit"
         );
         let noteDueDateEdit = document.getElementById("note-due-date-edit");
+        
         noteTitleEdit.value =
           e.target.parentNode.querySelector(".note-title").textContent;
         noteDescriptionEdit.value =
@@ -237,6 +257,12 @@ function ScreenController() {
         noteDueDateEdit.value =
           e.target.parentNode.querySelector(".note-due-date").textContent;
         editNoteId= parseInt(e.target.parentNode.id);
+        let notePriorityEdit1 = document.getElementById("note-priority-1-edit");
+    let notePriorityEdit2 = document.getElementById("note-priority-2-edit");
+    let notePriorityEdit3 = document.getElementById("note-priority-3-edit");
+    notePriorityEdit1.checked = false
+    notePriorityEdit2.checked = false
+    notePriorityEdit3.checked = false
       }
   }
   //adding projects to collections
@@ -259,26 +285,25 @@ function ScreenController() {
   noteFormEdit.addEventListener("submit", editNote);
   //to make the adding note form appear
   const noteFormBtn = document.querySelector(".note-form-btn");
+  //making addNote form appear by clicking +
   noteFormBtn.addEventListener("click", () => {
     noteForm.style.display = "block";
   });
+  const projectsFormBtn = document.querySelector(".project-form-btn")
+  projectsFormBtn.addEventListener("click",()=>{
+    projectForm.style.display="flex"
+    projectsFormBtn.style.display="none"
+  })
+  const noteFormCloseBtn = document.querySelector(".note-form-close")
+  noteFormCloseBtn.addEventListener("click",()=>{
+    noteForm.style.display="none"
+  })
+  const noteFormCloseEditBtn = document.querySelector(".note-form-close-edit")
+  noteFormCloseEditBtn.addEventListener("click",()=>{
+    noteFormEdit.style.display="none"
+  })
   console.log(main.getCollection());
   updateScreen();
   updateNotes();
 }
 ScreenController();
-// console.log(proj1.name)
-// const note1=new Note("what to do?")
-// const note2=new Note("what to do? 2")
-// console.log(note1)
-// const vari = new Collection();
-// vari.addProject(proj1);
-// vari.addNoteToProject(proj1,note1)
-// vari.addNoteToProject(proj1,note2)
-// const proj2 = new Project("mistborn")
-// vari.addProject(proj2);
-// vari.addNoteToProject(proj2,note2)
-// vari.addNoteToProject(proj2,note1)
-// const proj3 = new Project("misty")
-// vari.addProject(proj3);
-// console.log(vari.getCollection());
