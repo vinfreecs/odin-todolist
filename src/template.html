@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
     <title>Document</title>
   </head>
   <body>
@@ -18,9 +21,11 @@
         <div class="notes"></div>
         <button class="note-form-btn">+</button>
         <form action="" class="note-form-inp" style="display: none;">
-            <input type="text" name="note-title-inp" id="note-title-inp" placeholder="Title" required/>
-            <input type="reset" value="*" class="note-form-close">
-            <textarea name="note-description-inp" id="note-description-inp" placeholder="description" cols="30" rows="10" ></textarea>
+            <input type="text" name="note-title-inp" id="note-title-inp" placeholder="Title" maxlength="20" required/>
+            <button type="reset" class="note-form-close">
+              <img class="note-form-close-img" src="" alt="">
+            </button>
+            <textarea name="note-description-inp" id="note-description-inp" placeholder="description" cols="30" rows="10" maxlength="30" ></textarea>
             <input type="date" name="note-due-date-inp" id="note-due-date-inp" placeholder="Due Date">
             <div class="note-priority">
               <input type="radio" name="priority" value="green" id="note-priority-1">
@@ -34,7 +39,9 @@
         </form>
         <form action="" class="note-form-edit" style="display: none;">
           <input type="text" name="note-title-edit" id="note-title-edit" placeholder="Title" required/>
-          <input type="reset" value="Close" class="note-form-close-edit">
+          <button type="reset" class="note-form-close-edit">
+            <img class="note-form-close-edit-img" src="" alt="">
+          </button>
           <textarea name="note-description-edit" id="note-description-edit" placeholder="description" cols="30" rows="10"></textarea>
           <input type="date" name="note-due-date-edit" id="note-due-date-edit" placeholder="Due Date">
           <div class="note-priority-edit">

@@ -1,7 +1,12 @@
 import "./styles/style.css";
+import editSvg from "./assets/edit.png"
+import deleteSvg from "./assets/delete.svg"
+import cancelSvg from "./assets/cancel.svg"
+import deleteSvgWhite from "./assets/cancelwhite.svg"
+
 function Collection() {
   let collection = [];
-  let beginProj = new Project("Getting Started ...");
+  let beginProj = new Project("Notes");
   let beginNote = new Note(
     "New Note",
     "Add any info you wamt hear....",
@@ -52,7 +57,9 @@ function Collection() {
     });
   };
   this.deleteProject = function (proj) {
-    collection = collection.filter((item) => item !== proj);
+    collection = collection.filter((item) => item.name !== proj);
+    currentProj = collection[0];
+    console.log(collection)
   };
   this.deleteNote = function (noteId) {
     currentProj.notes = currentProj.notes.filter((item) => item.id !== noteId);
@@ -90,11 +97,20 @@ function ScreenController() {
   let projectsList = main.getCollection();
   const projectsDiv = document.querySelector(".projects");
   const updateScreen = () => {
+    let projectsList = main.getCollection();
     projectsDiv.textContent = "";
     projectsList.map((item) => {
       const projectDiv = document.createElement("button");
       projectDiv.classList = "project-div-btn";
-      projectDiv.textContent = item.name;
+      const projectTitle = document.createElement("h3")
+      projectTitle.textContent = item.name;
+      const deleteProjectBtn =document.createElement("img")
+      deleteProjectBtn.src= deleteSvgWhite
+      deleteProjectBtn.classList = "project-delete"
+      projectDiv.append(projectTitle)
+      if(item.name !== projectsList[0].name){
+        projectDiv.append(deleteProjectBtn)
+      }
       projectsDiv.appendChild(projectDiv);
     });
   };
@@ -102,10 +118,12 @@ function ScreenController() {
     let proj = main.getCurrentProject();
     const rightDiv = document.querySelector(".right");
     const notesDiv = document.querySelector(".notes");
+    let projectsList = main.getCollection();
     rightDiv.style.display = "block";
+    notesDiv.textContent = "";
     projectsList.forEach((item) => {
       if (item.name === proj.name) {
-        notesDiv.textContent = "";
+        
         item.notes.forEach((ele) => {
           const note = document.createElement("div");
           note.classList = "note";
@@ -118,7 +136,8 @@ function ScreenController() {
           const dueDate = document.createElement("p");
           dueDate.classList = "note-due-date";
           dueDate.textContent = ele.dueDate;
-          const deleteNote = document.createElement("button");
+          const deleteNote = document.createElement("img");
+          deleteNote.src = deleteSvg
           deleteNote.classList = "note-delete";
           deleteNote.textContent = "del";
           note.id = ele.id;
@@ -126,30 +145,27 @@ function ScreenController() {
           check.type = "checkbox";
           check.name = "check";
           check.id = "note-check";
-          const status = document.createElement("p");
-          status.classList = "note-status";
-          status.textContent = "pending";
           if (ele.check === true) {
-            status.textContent = "DONE";
             check.checked = true;
+            title.style.textDecoration = "line-through"
           }
-          const editBtn = document.createElement("button");
+          const editBtn = document.createElement("img");
+          editBtn.src = editSvg
           editBtn.classList = "note-edit";
-          editBtn.textContent = "edit";
           note.style.borderColor = ele.priority
+          note.append(check);
           note.append(title);
           note.append(description);
           note.append(dueDate);
-          note.append(deleteNote);
           note.append(editBtn);
-          note.append(check);
-          note.append(status);
+          note.append(deleteNote);
           notesDiv.append(note);
         });
       }
     });
   }
   function upCurrentProj(e) {
+    let projectsList = main.getCollection();
     projectsList.forEach((item) => {
       if (item.name === e.target.textContent) {
         main.updateCurrentProject(item);
@@ -158,6 +174,7 @@ function ScreenController() {
     updateNotes();
   }
   function addNotes(e) {
+    let projectsList = main.getCollection();
     if (noteForm.classList.value === "note-form-inp") {
       e.preventDefault();
       let noteTitle = document.getElementById("note-title-inp");
@@ -168,8 +185,6 @@ function ScreenController() {
       let notePriority3 = document.getElementById("note-priority-3");
       let notePriority = document.querySelectorAll('input[name="priority"]:checked')
       let priorityColorValue = notePriority.length>0 ? notePriority[0].value : "black"
-      console.log(priorityColorValue);
-      console.log(notePriority1,notePriority2,notePriority3);
       if (noteTitle.value === "") {
         alert("Enter some text");
       } else {
@@ -295,12 +310,25 @@ function ScreenController() {
     projectsFormBtn.style.display="none"
   })
   const noteFormCloseBtn = document.querySelector(".note-form-close")
+  const noteFormCloseBImg = document.querySelector(".note-form-close-img")
+  noteFormCloseBImg.src = cancelSvg
   noteFormCloseBtn.addEventListener("click",()=>{
     noteForm.style.display="none"
   })
   const noteFormCloseEditBtn = document.querySelector(".note-form-close-edit")
+  const noteFormCloseEditImg = document.querySelector(".note-form-close-edit-img")
+  noteFormCloseEditImg.src= cancelSvg
   noteFormCloseEditBtn.addEventListener("click",()=>{
     noteFormEdit.style.display="none"
+  })
+  document.addEventListener("click",(e)=>{
+    console.log(e.target.classList.value)
+    if(e.target.classList.value == "project-delete"){
+      main.deleteProject(e.target.parentNode.firstChild.textContent)
+      updateScreen();
+      updateNotes();
+    }
+    updateNotes();
   })
   console.log(main.getCollection());
   updateScreen();
