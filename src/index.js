@@ -5,7 +5,7 @@ import cancelSvg from "./assets/cancel.svg"
 import deleteSvgWhite from "./assets/cancelwhite.svg"
 
 function Collection() {
-  let collection = [];
+  let collection = JSON.parse(localStorage.getItem("data"));
   let beginProj = new Project("Notes");
   let beginNote = new Note(
     "New Note",
@@ -13,9 +13,17 @@ function Collection() {
     "2023-09-11",
     "black"
   );
+    console.log(JSON.parse(localStorage.getItem("data")) === collection)
   beginProj.notes.push(beginNote);
-  collection.push(beginProj);
+  if(collection === null){
+    collection = []
+    collection.push(beginProj);
+  }
   let currentProj = collection[0];
+
+  localStorage.setItem("data",JSON.stringify(collection))
+  console.log((JSON.parse(localStorage.getItem("data"))))
+  
   this.getCurrentProject = () => currentProj;
   this.updateCurrentProject = function (proj) {
     currentProj = proj;
@@ -35,10 +43,12 @@ function Collection() {
       let proj = new Project(item);
       collection.push(proj);
     }
+    localStorage.setItem("data",JSON.stringify(collection))
   };
   this.addNoteToProject = function (proj, title, description, dueDate,priority) {
     let note = new Note(title, description, dueDate,priority);
     proj.notes.push(note);
+    localStorage.setItem("data",JSON.stringify(collection))
   };
   this.editNoteToProject = function (
     noteId,
@@ -55,14 +65,16 @@ function Collection() {
         ele.priority = editPriority
       }
     });
+    localStorage.setItem("data",JSON.stringify(collection))
   };
   this.deleteProject = function (proj) {
     collection = collection.filter((item) => item.name !== proj);
     currentProj = collection[0];
-    console.log(collection)
+    localStorage.setItem("data",JSON.stringify(collection))
   };
   this.deleteNote = function (noteId) {
     currentProj.notes = currentProj.notes.filter((item) => item.id !== noteId);
+    localStorage.setItem("data",JSON.stringify(collection))
   };
   this.checkNote = function (noteId) {
     currentProj.notes.map((item) => {
@@ -70,6 +82,7 @@ function Collection() {
         item.check === false ? (item.check = true) : (item.check = false);
       }
     });
+    localStorage.setItem("data",JSON.stringify(collection))
   };
   this.getProjectByID = function (name) {
     for (let i = 0; i < collection.length; i++) {
@@ -77,6 +90,7 @@ function Collection() {
         return i;
       }
     }
+    localStorage.setItem("data",JSON.stringify(collection))
   };
 }
 function Project(name) {
@@ -111,6 +125,9 @@ function ScreenController() {
       if(item.name !== projectsList[0].name){
         projectDiv.append(deleteProjectBtn)
       }
+      if(item.name === main.getCurrentProject().name){
+        projectDiv.style.backgroundColor="wheat"
+      }
       projectsDiv.appendChild(projectDiv);
     });
   };
@@ -119,7 +136,7 @@ function ScreenController() {
     const rightDiv = document.querySelector(".right");
     const notesDiv = document.querySelector(".notes");
     let projectsList = main.getCollection();
-    rightDiv.style.display = "block";
+    rightDiv.style.display = "flex";
     notesDiv.textContent = "";
     projectsList.forEach((item) => {
       if (item.name === proj.name) {
@@ -163,6 +180,7 @@ function ScreenController() {
         });
       }
     });
+    updateScreen();
   }
   function upCurrentProj(e) {
     let projectsList = main.getCollection();
@@ -209,6 +227,7 @@ function ScreenController() {
       notePriority3.checked = false
 
       noteForm.style.display = "none";
+      noteFormBtn.style.display ="block"
     }
   }
   function addProjects(e) {
@@ -257,6 +276,7 @@ function ScreenController() {
   }
   function editNoteForm(e){
     if (e.target.classList.value === "note-edit") {
+      noteForm.style.display = "none"
         let noteFormEdit = document.querySelector(".note-form-edit");
         noteFormEdit.style.display = "block";
         let noteTitleEdit = document.getElementById("note-title-edit");
@@ -291,7 +311,7 @@ function ScreenController() {
   //deleting notes
   document.addEventListener("click", deleteNote);
   //marking notes as completed or not
-  document.addEventListener("change", checkNote);
+  document.addEventListener("click", checkNote);
   // editing note and updating the form of editing
   let editNoteId =null;
   document.addEventListener("click", editNoteForm);
@@ -303,6 +323,8 @@ function ScreenController() {
   //making addNote form appear by clicking +
   noteFormBtn.addEventListener("click", () => {
     noteForm.style.display = "block";
+    noteFormEdit.style.display="none"
+    noteFormBtn.style.display="none"
   });
   const projectsFormBtn = document.querySelector(".project-form-btn")
   projectsFormBtn.addEventListener("click",()=>{
@@ -314,6 +336,7 @@ function ScreenController() {
   noteFormCloseBImg.src = cancelSvg
   noteFormCloseBtn.addEventListener("click",()=>{
     noteForm.style.display="none"
+    noteFormBtn.style.display ="block"
   })
   const noteFormCloseEditBtn = document.querySelector(".note-form-close-edit")
   const noteFormCloseEditImg = document.querySelector(".note-form-close-edit-img")
@@ -322,7 +345,6 @@ function ScreenController() {
     noteFormEdit.style.display="none"
   })
   document.addEventListener("click",(e)=>{
-    console.log(e.target.classList.value)
     if(e.target.classList.value == "project-delete"){
       main.deleteProject(e.target.parentNode.firstChild.textContent)
       updateScreen();
@@ -335,3 +357,4 @@ function ScreenController() {
   updateNotes();
 }
 ScreenController();
+
