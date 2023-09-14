@@ -1,11 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
     <title>Document</title>
-<script defer src="bundled11be8ab0cd956617c84.js"></script></head>
-<body>
-    HI
-</body>
+  <script defer src="bundle1cccf497630a5827f31b.js"></script></head>
+  <body>
+    <div class="left">
+        <div class="projects"></div>
+        <button class="project-form-btn">Add Project</button>
+      <form action="" class="project-form" style="display: none;">
+        <input type="text" name="project-name" id="project-name" placeholder="Title"/>
+        <button class="project-name-submit">+</button>
+      </form>
+    </div>
+    <div class="right" style="display: none;">
+        <div class="notes"></div>
+        <button class="note-form-btn">Add Note</button>
+        <form action="" class="note-form-inp" style="display: none;">
+          <div class="note-flex-form">
+            <div class="note-form-text">
+              <input type="text" name="note-title-inp" id="note-title-inp" placeholder="Title" maxlength="20" required/>
+              <textarea name="note-description-inp" id="note-description-inp" placeholder="description" cols="29" rows="10" maxlength="30" ></textarea>
+              <input type="date" name="note-due-date-inp" id="note-due-date-inp" placeholder="Due Date">
+            </div>
+              <div class="note-priority">
+                <button type="reset" class="note-form-close">
+                  <img class="note-form-close-img" src="" alt="">
+                </button>
+                <div class="note-radio">
+                  <input type="radio" name="priority" value="green" id="note-priority-1">
+                  <label for="note-priority-1">green</label>
+                </div>
+                <div class="note-radio">
+                  <input type="radio" name="priority" value="yellow" id="note-priority-2">
+                  <label for="note-priority-2">yellow</label>
+                </div>
+                <div class="note-radio">
+                  <input type="radio" name="priority" value="red" id="note-priority-3">
+                  <label for="note-priority-3">red</label>
+                </div>
+              </div>
+          </div>
+            <button class="note-submit">+</button>
+        </form>
+        <form action="" class="note-form-edit" style="display: none;">
+          <div class="note-flex-form">
+            <div class="note-form-text">
+              <input type="text" name="note-title-edit" id="note-title-edit" placeholder="Title" required/>
+              <textarea name="note-description-edit" id="note-description-edit" placeholder="description" cols="29" rows="10"></textarea>
+              <input type="date" name="note-due-date-edit" id="note-due-date-edit" placeholder="Due Date">
+            </div>
+            <div class="note-priority-edit">
+              <button type="reset" class="note-form-close-edit">
+                <img class="note-form-close-edit-img" src="" alt="">
+              </button>
+              <div class="note-radio">
+                <input type="radio" name="priority-edit" value="green" id="note-priority-1-edit">
+              <label for="note-priority-1-edit">green</label>
+              </div>
+              <div class="note-radio">
+                <input type="radio" name="priority-edit" value="yellow" id="note-priority-2-edit">
+              <label for="note-priority-2-edit">yellow</label>
+              </div>
+              <div class="note-radio">
+                <input type="radio" name="priority-edit" value="red" id="note-priority-3-edit">
+              <label for="note-priority-3-edit">red</label>
+              </div>
+            </div>
+          </div>
+          <button class="note-submit">+</button>
+      </form>
+    </div>
+  </body>
 </html>
